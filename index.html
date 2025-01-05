@@ -1,0 +1,1136 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI导航 - 你的人工智能工具集</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preload" as="image" href="images/icons/chat.svg">
+    <link rel="preload" as="image" href="images/icons/code.svg">
+    <link rel="preload" as="image" href="images/icons/image.svg">
+    <link rel="preload" as="image" href="images/icons/video.svg">
+    <link rel="preload" as="image" href="images/icons/ppt.svg">
+</head>
+<body>
+    <div class="background-animation">
+        <div class="gradient-sphere"></div>
+        <div class="gradient-sphere"></div>
+        <div class="gradient-sphere"></div>
+    </div>
+
+    <header>
+        <h1>AI导航</h1>
+        <p>发现最实用的AI工具</p>
+    </header>
+
+    <div class="search-container">
+        <input type="text" id="searchInput" placeholder="搜索AI工具...">
+    </div>
+
+    <main>
+        <!-- 聊天对话类 -->
+        <section class="category" data-type="chat">
+            <h2>
+                <img src="images/icons/chat.svg" alt="聊天" class="category-icon">
+                聊天对话
+            </h2>
+            <div class="tools-grid">
+                <div class="tool-card" data-keywords="chatgpt gpt-4 openai 聊天机器人 人工智能对话 AI助手">
+                    <div class="tool-header">
+                        <div class="logo-wrapper">
+                            <img 
+                                src="images/logos/chatgpt.png"
+                                alt="ChatGPT Logo" 
+                                class="tool-logo"
+                                loading="lazy"
+                                data-initial="GPT"
+                            >
+                        </div>
+                        <div class="tool-info">
+                            <h3>ChatGPT</h3>
+                            <span class="visits">日访问量：1000万+</span>
+                        </div>
+                    </div>
+                    <p>OpenAI开发的大语言模型，可用于对话、写作、编程等多种场景。</p>
+                    <div class="tool-footer">
+                        <a href="https://chat.openai.com" target="_blank">
+                            <span>访问网站</span>
+                            <svg class="arrow-icon" viewBox="0 0 24 24">
+                                <path d="M5 12h14M12 5l7 7-7 7"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+                <div class="tool-card" data-keywords="claude ai anthropic 对话 写作 学术">
+                    <div class="tool-header">
+                        <div class="logo-wrapper">
+                            <img 
+                                src="images/logos/claude.png" 
+                                alt="Claude Logo" 
+                                class="tool-logo"
+                                loading="lazy"
+                                data-initial="CLD"
+                            >
+                        </div>
+                        <div class="tool-info">
+                            <h3>Claude</h3>
+                            <span class="visits">日访问量：500万+</span>
+                        </div>
+                    </div>
+                    <p>Anthropic开发的AI助手，擅长学术写作和深度分析。</p>
+                    <div class="tool-footer">
+                        <a href="https://claude.ai" target="_blank">
+                            <span>访问网站</span>
+                            <svg class="arrow-icon" viewBox="0 0 24 24">
+                                <path d="M5 12h14M12 5l7 7-7 7"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+                <div class="tool-card" data-keywords="bard google ai chat 对话 搜索">
+                    <div class="tool-header">
+                        <div class="logo-wrapper">
+                            <img 
+                                src="images/logos/bard.png" 
+                                alt="Bard Logo" 
+                                class="tool-logo"
+                                loading="lazy"
+                                data-initial="BARD"
+                            >
+                        </div>
+                        <div class="tool-info">
+                            <h3>Bard</h3>
+                            <span class="visits">日访问量：450万+</span>
+                        </div>
+                    </div>
+                    <p>Google开发的AI助手，擅长信息检索和实时数据分析。</p>
+                    <div class="tool-footer">
+                        <a href="https://bard.google.com" target="_blank">
+                            <span>访问网站</span>
+                            <svg class="arrow-icon" viewBox="0 0 24 24">
+                                <path d="M5 12h14M12 5l7 7-7 7"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+                <div class="tool-card" data-keywords="perplexity ai search 搜索 对话">
+                    <div class="tool-header">
+                        <div class="logo-wrapper">
+                            <img 
+                                src="images/logos/perplexity.png" 
+                                alt="Perplexity AI Logo" 
+                                class="tool-logo"
+                                loading="lazy"
+                                data-initial="PPX"
+                            >
+                        </div>
+                        <div class="tool-info">
+                            <h3>Perplexity AI</h3>
+                            <span class="visits">日访问量：300万+</span>
+                        </div>
+                    </div>
+                    <p>结合搜索引擎的AI助手，提供准确的实时信息和引用来源。</p>
+                    <div class="tool-footer">
+                        <a href="https://www.perplexity.ai" target="_blank">
+                            <span>访问网站</span>
+                            <svg class="arrow-icon" viewBox="0 0 24 24">
+                                <path d="M5 12h14M12 5l7 7-7 7"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+                <div class="tool-card" data-keywords="character ai roleplay chat 角色扮演 对话">
+                    <div class="tool-header">
+                        <div class="logo-wrapper">
+                            <img 
+                                src="images/logos/character.png" 
+                                alt="Character.AI Logo" 
+                                class="tool-logo"
+                                loading="lazy"
+                                data-initial="CHR"
+                            >
+                        </div>
+                        <div class="tool-info">
+                            <h3>Character.AI</h3>
+                            <span class="visits">日访问量：250万+</span>
+                        </div>
+                    </div>
+                    <p>可以与各种角色对话的AI平台，支持角色扮演和创意对话。</p>
+                    <div class="tool-footer">
+                        <a href="https://character.ai" target="_blank">
+                            <span>访问网站</span>
+                            <svg class="arrow-icon" viewBox="0 0 24 24">
+                                <path d="M5 12h14M12 5l7 7-7 7"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+                <div class="tool-card" data-keywords="pi inflection ai chat 对话 情感">
+                    <div class="tool-header">
+                        <div class="logo-wrapper">
+                            <img 
+                                src="images/logos/pi.png" 
+                                alt="Pi Logo" 
+                                class="tool-logo"
+                                loading="lazy"
+                                data-initial="PI"
+                            >
+                        </div>
+                        <div class="tool-info">
+                            <h3>Pi by Inflection</h3>
+                            <span class="visits">日访问量：200万+</span>
+                        </div>
+                    </div>
+                    <p>个性化AI助手，擅长自然对话和情感交流。</p>
+                    <div class="tool-footer">
+                        <a href="https://pi.ai" target="_blank">
+                            <span>访问网站</span>
+                            <svg class="arrow-icon" viewBox="0 0 24 24">
+                                <path d="M5 12h14M12 5l7 7-7 7"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+                <div class="tool-card" data-keywords="youchat you.com search ai chat 搜索 对话">
+                    <div class="tool-header">
+                        <div class="logo-wrapper">
+                            <img 
+                                src="images/logos/youchat.png" 
+                                alt="YouChat Logo" 
+                                class="tool-logo"
+                                loading="lazy"
+                                data-initial="YOU"
+                            >
+                        </div>
+                        <div class="tool-info">
+                            <h3>YouChat</h3>
+                            <span class="visits">日访问量：180万+</span>
+                        </div>
+                    </div>
+                    <p>结合搜索引擎的AI对话工具，提供实时信息更新。</p>
+                    <div class="tool-footer">
+                        <a href="https://you.com" target="_blank">
+                            <span>访问网站</span>
+                            <svg class="arrow-icon" viewBox="0 0 24 24">
+                                <path d="M5 12h14M12 5l7 7-7 7"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+                <div class="tool-card" data-keywords="poe ai chat multiple models 多模型">
+                    <div class="tool-header">
+                        <div class="logo-wrapper">
+                            <img 
+                                src="images/logos/poe.png" 
+                                alt="Poe Logo" 
+                                class="tool-logo"
+                                loading="lazy"
+                                data-initial="POE"
+                            >
+                        </div>
+                        <div class="tool-info">
+                            <h3>Poe</h3>
+                            <span class="visits">日访问量：150万+</span>
+                        </div>
+                    </div>
+                    <p>集成多个AI模型的对话平台，可以同时使用多个AI助手。</p>
+                    <div class="tool-footer">
+                        <a href="https://poe.com" target="_blank">
+                            <span>访问网站</span>
+                            <svg class="arrow-icon" viewBox="0 0 24 24">
+                                <path d="M5 12h14M12 5l7 7-7 7"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 编程开发类 -->
+        <section class="category" data-type="code">
+            <h2>
+                <img src="images/icons/code.svg" alt="编程" class="category-icon">
+                编程开发
+            </h2>
+            <div class="tools-grid">
+                <div class="tool-card" data-keywords="github copilot code ai programming 编程">
+                    <div class="tool-header">
+                        <div class="logo-wrapper">
+                            <img 
+                                src="images/logos/copilot.png" 
+                                alt="GitHub Copilot Logo" 
+                                class="tool-logo"
+                                loading="lazy"
+                                data-initial="COP"
+                            >
+                        </div>
+                        <div class="tool-info">
+                            <h3>GitHub Copilot</h3>
+                            <span class="visits">日访问量：800万+</span>
+                        </div>
+                    </div>
+                    <p>AI代码助手，提供实时代码建议和自动完成功能。</p>
+                    <div class="tool-footer">
+                        <a href="https://github.com/features/copilot" target="_blank">
+                            <span>访问网站</span>
+                            <svg class="arrow-icon" viewBox="0 0 24 24">
+                                <path d="M5 12h14M12 5l7 7-7 7"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+                <div class="tool-card" data-keywords="cursor code editor ai programming 编程">
+                    <div class="tool-header">
+                        <div class="logo-wrapper">
+                            <img 
+                                src="images/logos/cursor.png" 
+                                alt="Cursor Logo" 
+                                class="tool-logo"
+                                loading="lazy"
+                                data-initial="CUR"
+                            >
+                        </div>
+                        <div class="tool-info">
+                            <h3>Cursor</h3>
+                            <span class="visits">日访问量：300万+</span>
+                        </div>
+                    </div>
+                    <p>AI驱动的代码编辑器，集成了强大的代码生成和解释功能。</p>
+                    <div class="tool-footer">
+                        <a href="https://cursor.sh" target="_blank">
+                            <span>访问网站</span>
+                            <svg class="arrow-icon" viewBox="0 0 24 24">
+                                <path d="M5 12h14M12 5l7 7-7 7"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+                <div class="tool-card" data-keywords="amazon codewhisperer aws code ai programming 编程">
+                    <div class="tool-header">
+                        <div class="logo-wrapper">
+                            <img 
+                                src="images/logos/codewhisperer.png" 
+                                alt="CodeWhisperer Logo" 
+                                class="tool-logo"
+                                loading="lazy"
+                                data-initial="CW"
+                            >
+                        </div>
+                        <div class="tool-info">
+                            <h3>Amazon CodeWhisperer</h3>
+                            <span class="visits">日访问量：250万+</span>
+                        </div>
+                    </div>
+                    <p>亚马逊开发的AI编程助手，支持多种编程语言。</p>
+                    <div class="tool-footer">
+                        <a href="https://aws.amazon.com/codewhisperer" target="_blank">
+                            <span>访问网站</span>
+                            <svg class="arrow-icon" viewBox="0 0 24 24">
+                                <path d="M5 12h14M12 5l7 7-7 7"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+                <div class="tool-card" data-keywords="tabnine code completion ai ide 代码补全">
+                    <div class="tool-header">
+                        <div class="logo-wrapper">
+                            <img 
+                                src="images/logos/tabnine.png" 
+                                alt="Tabnine Logo" 
+                                class="tool-logo"
+                                loading="lazy"
+                                data-initial="TAB"
+                            >
+                        </div>
+                        <div class="tool-info">
+                            <h3>Tabnine</h3>
+                            <span class="visits">日访问量：200万+</span>
+                        </div>
+                    </div>
+                    <p>AI代码补全工具，支持所有主流IDE。</p>
+                    <div class="tool-footer">
+                        <a href="https://www.tabnine.com" target="_blank">
+                            <span>访问网站</span>
+                            <svg class="arrow-icon" viewBox="0 0 24 24">
+                                <path d="M5 12h14M12 5l7 7-7 7"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+                <div class="tool-card" data-keywords="replit ide online coding 在线编程">
+                    <div class="tool-header">
+                        <div class="logo-wrapper">
+                            <img 
+                                src="images/logos/replit.png" 
+                                alt="Replit Logo" 
+                                class="tool-logo"
+                                loading="lazy"
+                                data-initial="RPL"
+                            >
+                        </div>
+                        <div class="tool-info">
+                            <h3>Replit</h3>
+                            <span class="visits">日访问量：180万+</span>
+                        </div>
+                    </div>
+                    <p>在线IDE平台，集成AI编程助手功能。</p>
+                    <div class="tool-footer">
+                        <a href="https://replit.com" target="_blank">
+                            <span>访问网站</span>
+                            <svg class="arrow-icon" viewBox="0 0 24 24">
+                                <path d="M5 12h14M12 5l7 7-7 7"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+                <div class="tool-card" data-keywords="codegeex ai code assistant 编程助手">
+                    <div class="tool-header">
+                        <div class="logo-wrapper">
+                            <img 
+                                src="images/logos/codegeex.png" 
+                                alt="CodeGeeX Logo" 
+                                class="tool-logo"
+                                loading="lazy"
+                                data-initial="CGX"
+                            >
+                        </div>
+                        <div class="tool-info">
+                            <h3>CodeGeeX</h3>
+                            <span class="visits">日访问量：150万+</span>
+                        </div>
+                    </div>
+                    <p>开源的AI编程助手，支持多种编程语言。</p>
+                    <div class="tool-footer">
+                        <a href="https://codegeex.cn" target="_blank">
+                            <span>访问网站</span>
+                            <svg class="arrow-icon" viewBox="0 0 24 24">
+                                <path d="M5 12h14M12 5l7 7-7 7"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+                <div class="tool-card" data-keywords="codeium ai code completion free 免费">
+                    <div class="tool-header">
+                        <div class="logo-wrapper">
+                            <img 
+                                src="images/logos/codeium.png" 
+                                alt="Codeium Logo" 
+                                class="tool-logo"
+                                loading="lazy"
+                                data-initial="CDM"
+                            >
+                        </div>
+                        <div class="tool-info">
+                            <h3>Codeium</h3>
+                            <span class="visits">日访问量：120万+</span>
+                        </div>
+                    </div>
+                    <p>免费的AI代码补全工具，支持多种编程语言和IDE。</p>
+                    <div class="tool-footer">
+                        <a href="https://codeium.com" target="_blank">
+                            <span>访问网站</span>
+                            <svg class="arrow-icon" viewBox="0 0 24 24">
+                                <path d="M5 12h14M12 5l7 7-7 7"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 图像生成类 -->
+        <section class="category" data-type="image">
+            <h2>
+                <img src="images/icons/image.svg" alt="图像" class="category-icon">
+                图像生成
+            </h2>
+            <div class="tools-grid">
+                <div class="tool-card" data-keywords="midjourney ai image art generation 图像生成">
+                    <div class="tool-header">
+                        <div class="logo-wrapper">
+                            <img 
+                                src="images/logos/midjourney.png" 
+                                alt="Midjourney Logo" 
+                                class="tool-logo"
+                                loading="lazy"
+                                data-initial="MJ"
+                            >
+                        </div>
+                        <div class="tool-info">
+                            <h3>Midjourney</h3>
+                            <span class="visits">日访问量：900万+</span>
+                        </div>
+                    </div>
+                    <p>强大的AI图像生成工具，特别擅长艺术风格创作。</p>
+                    <div class="tool-footer">
+                        <a href="https://www.midjourney.com" target="_blank">
+                            <span>访问网站</span>
+                            <svg class="arrow-icon" viewBox="0 0 24 24">
+                                <path d="M5 12h14M12 5l7 7-7 7"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+                <div class="tool-card" data-keywords="dalle openai image generation art 图像生成">
+                    <div class="tool-header">
+                        <div class="logo-wrapper">
+                            <img 
+                                src="images/logos/dalle.png" 
+                                alt="DALL-E Logo" 
+                                class="tool-logo"
+                                loading="lazy"
+                                data-initial="DALL"
+                            >
+                        </div>
+                        <div class="tool-info">
+                            <h3>DALL-E</h3>
+                            <span class="visits">日访问量：600万+</span>
+                        </div>
+                    </div>
+                    <p>OpenAI开发的AI图像生成工具，可根据文字描述生成图像。</p>
+                    <div class="tool-footer">
+                        <a href="https://labs.openai.com" target="_blank">
+                            <span>访问网站</span>
+                            <svg class="arrow-icon" viewBox="0 0 24 24">
+                                <path d="M5 12h14M12 5l7 7-7 7"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+                <div class="tool-card" data-keywords="stable diffusion ai image generation open source 开源">
+                    <div class="tool-header">
+                        <div class="logo-wrapper">
+                            <img 
+                                src="images/logos/stable-diffusion.png" 
+                                alt="Stable Diffusion Logo" 
+                                class="tool-logo"
+                                loading="lazy"
+                                data-initial="SD"
+                            >
+                        </div>
+                        <div class="tool-info">
+                            <h3>Stable Diffusion</h3>
+                            <span class="visits">日访问量：800万+</span>
+                        </div>
+                    </div>
+                    <p>开源的AI图像生成模型，支持本地部署。</p>
+                    <div class="tool-footer">
+                        <a href="https://stability.ai" target="_blank">
+                            <span>访问网站</span>
+                            <svg class="arrow-icon" viewBox="0 0 24 24">
+                                <path d="M5 12h14M12 5l7 7-7 7"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+                <div class="tool-card" data-keywords="leonardo ai image generation professional 专业">
+                    <div class="tool-header">
+                        <div class="logo-wrapper">
+                            <img 
+                                src="images/logos/leonardo.png" 
+                                alt="Leonardo.ai Logo" 
+                                class="tool-logo"
+                                loading="lazy"
+                                data-initial="LEO"
+                            >
+                        </div>
+                        <div class="tool-info">
+                            <h3>Leonardo.ai</h3>
+                            <span class="visits">日访问量：400万+</span>
+                        </div>
+                    </div>
+                    <p>专业的AI图像生成平台，支持自定义模型训练。</p>
+                    <div class="tool-footer">
+                        <a href="https://leonardo.ai" target="_blank">
+                            <span>访问网站</span>
+                            <svg class="arrow-icon" viewBox="0 0 24 24">
+                                <path d="M5 12h14M12 5l7 7-7 7"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+                <div class="tool-card" data-keywords="canva ai image generation design 设计">
+                    <div class="tool-header">
+                        <div class="logo-wrapper">
+                            <img 
+                                src="images/logos/canva.png" 
+                                alt="Canva Logo" 
+                                class="tool-logo"
+                                loading="lazy"
+                                data-initial="CNV"
+                            >
+                        </div>
+                        <div class="tool-info">
+                            <h3>Canva Text to Image</h3>
+                            <span class="visits">日访问量：350万+</span>
+                        </div>
+                    </div>
+                    <p>Canva集成的AI图像生成工具，适合设计使用。</p>
+                    <div class="tool-footer">
+                        <a href="https://www.canva.com" target="_blank">
+                            <span>访问网站</span>
+                            <svg class="arrow-icon" viewBox="0 0 24 24">
+                                <path d="M5 12h14M12 5l7 7-7 7"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+                <div class="tool-card" data-keywords="firefly adobe ai image generation 图像生成">
+                    <div class="tool-header">
+                        <div class="logo-wrapper">
+                            <img 
+                                src="images/logos/firefly.png" 
+                                alt="Firefly Logo" 
+                                class="tool-logo"
+                                loading="lazy"
+                                data-initial="FF"
+                            >
+                        </div>
+                        <div class="tool-info">
+                            <h3>Firefly</h3>
+                            <span class="visits">日访问量：300万+</span>
+                        </div>
+                    </div>
+                    <p>Adobe开发的AI创意工具，支持图像生成和编辑。</p>
+                    <div class="tool-footer">
+                        <a href="https://firefly.adobe.com" target="_blank">
+                            <span>访问网站</span>
+                            <svg class="arrow-icon" viewBox="0 0 24 24">
+                                <path d="M5 12h14M12 5l7 7-7 7"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+                <div class="tool-card" data-keywords="bing image creator microsoft ai 必应">
+                    <div class="tool-header">
+                        <div class="logo-wrapper">
+                            <img 
+                                src="images/logos/bing-image.png" 
+                                alt="Bing Image Creator Logo" 
+                                class="tool-logo"
+                                loading="lazy"
+                                data-initial="BING"
+                            >
+                        </div>
+                        <div class="tool-info">
+                            <h3>Bing Image Creator</h3>
+                            <span class="visits">日访问量：250万+</span>
+                        </div>
+                    </div>
+                    <p>微软推出的免费AI图像生成工具。</p>
+                    <div class="tool-footer">
+                        <a href="https://www.bing.com/create" target="_blank">
+                            <span>访问网站</span>
+                            <svg class="arrow-icon" viewBox="0 0 24 24">
+                                <path d="M5 12h14M12 5l7 7-7 7"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+                <div class="tool-card" data-keywords="d-id ai video avatar digital human 数字人">
+                    <div class="tool-header">
+                        <div class="logo-wrapper">
+                            <img 
+                                src="images/logos/did.png" 
+                                alt="D-ID Logo" 
+                                class="tool-logo"
+                                loading="lazy"
+                                data-initial="DID"
+                            >
+                        </div>
+                        <div class="tool-info">
+                            <h3>D-ID</h3>
+                            <span class="visits">日访问量：250万+</span>
+                        </div>
+                    </div>
+                    <p>AI数字人视频生成平台，可创建逼真的数字人视频。</p>
+                    <div class="tool-footer">
+                        <a href="https://www.d-id.com" target="_blank">
+                            <span>访问网站</span>
+                            <svg class="arrow-icon" viewBox="0 0 24 24">
+                                <path d="M5 12h14M12 5l7 7-7 7"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+                <div class="tool-card" data-keywords="heygen ai video generation voice 视频生成">
+                    <div class="tool-header">
+                        <div class="logo-wrapper">
+                            <img 
+                                src="images/logos/heygen.png" 
+                                alt="HeyGen Logo" 
+                                class="tool-logo"
+                                loading="lazy"
+                                data-initial="HEY"
+                            >
+                        </div>
+                        <div class="tool-info">
+                            <h3>HeyGen</h3>
+                            <span class="visits">日访问量：200万+</span>
+                        </div>
+                    </div>
+                    <p>AI视频生成和配音平台，支持多语言。</p>
+                    <div class="tool-footer">
+                        <a href="https://www.heygen.com" target="_blank">
+                            <span>访问网站</span>
+                            <svg class="arrow-icon" viewBox="0 0 24 24">
+                                <path d="M5 12h14M12 5l7 7-7 7"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+                <div class="tool-card" data-keywords="descript ai video editing 视频编辑">
+                    <div class="tool-header">
+                        <div class="logo-wrapper">
+                            <img 
+                                src="images/logos/descript.png" 
+                                alt="Descript Logo" 
+                                class="tool-logo"
+                                loading="lazy"
+                                data-initial="DESC"
+                            >
+                        </div>
+                        <div class="tool-info">
+                            <h3>Descript</h3>
+                            <span class="visits">日访问量：180万+</span>
+                        </div>
+                    </div>
+                    <p>AI视频编辑工具，支持文本编辑视频。</p>
+                    <div class="tool-footer">
+                        <a href="https://www.descript.com" target="_blank">
+                            <span>访问网站</span>
+                            <svg class="arrow-icon" viewBox="0 0 24 24">
+                                <path d="M5 12h14M12 5l7 7-7 7"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+                <div class="tool-card" data-keywords="kapwing video editing ai online 在线编辑">
+                    <div class="tool-header">
+                        <div class="logo-wrapper">
+                            <img 
+                                src="images/logos/kapwing.png" 
+                                alt="Kapwing Logo" 
+                                class="tool-logo"
+                                loading="lazy"
+                                data-initial="KAP"
+                            >
+                        </div>
+                        <div class="tool-info">
+                            <h3>Kapwing</h3>
+                            <span class="visits">日访问量：150万+</span>
+                        </div>
+                    </div>
+                    <p>在线视频编辑平台，集成AI功能。</p>
+                    <div class="tool-footer">
+                        <a href="https://www.kapwing.com" target="_blank">
+                            <span>访问网站</span>
+                            <svg class="arrow-icon" viewBox="0 0 24 24">
+                                <path d="M5 12h14M12 5l7 7-7 7"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 视频生成类 -->
+        <section class="category" data-type="video">
+            <h2>
+                <img src="images/icons/video.svg" alt="视频" class="category-icon">
+                视频生成
+            </h2>
+            <div class="tools-grid">
+                <div class="tool-card" data-keywords="runway ai video generation editing 视频生成">
+                    <div class="tool-header">
+                        <div class="logo-wrapper">
+                            <img 
+                                src="images/logos/runway.png" 
+                                alt="Runway Logo" 
+                                class="tool-logo"
+                                loading="lazy"
+                                data-initial="RUN"
+                            >
+                        </div>
+                        <div class="tool-info">
+                            <h3>Runway</h3>
+                            <span class="visits">日访问量：400万+</span>
+                        </div>
+                    </div>
+                    <p>专业的AI视频编辑和生成工具，支持多种创意效果。</p>
+                    <div class="tool-footer">
+                        <a href="https://runway.ml" target="_blank">
+                            <span>访问网站</span>
+                            <svg class="arrow-icon" viewBox="0 0 24 24">
+                                <path d="M5 12h14M12 5l7 7-7 7"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+                <div class="tool-card" data-keywords="synthesia ai video avatar generation 数字人">
+                    <div class="tool-header">
+                        <div class="logo-wrapper">
+                            <img 
+                                src="images/logos/synthesia.png" 
+                                alt="Synthesia Logo" 
+                                class="tool-logo"
+                                loading="lazy"
+                                data-initial="SYN"
+                            >
+                        </div>
+                        <div class="tool-info">
+                            <h3>Synthesia</h3>
+                            <span class="visits">日访问量：200万+</span>
+                        </div>
+                    </div>
+                    <p>AI视频生成平台，可创建真人视频和数字人视频。</p>
+                    <div class="tool-footer">
+                        <a href="https://www.synthesia.io" target="_blank">
+                            <span>访问网站</span>
+                            <svg class="arrow-icon" viewBox="0 0 24 24">
+                                <path d="M5 12h14M12 5l7 7-7 7"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+                <div class="tool-card" data-keywords="pika labs video generation ai text to video">
+                    <div class="tool-header">
+                        <div class="logo-wrapper">
+                            <img 
+                                src="images/logos/pika.png" 
+                                alt="Pika Labs Logo" 
+                                class="tool-logo"
+                                loading="lazy"
+                                data-initial="PIKA"
+                            >
+                        </div>
+                        <div class="tool-info">
+                            <h3>Pika Labs</h3>
+                            <span class="visits">日访问量：300万+</span>
+                        </div>
+                    </div>
+                    <p>文本生成视频的AI工具，支持高质量视频生成。</p>
+                    <div class="tool-footer">
+                        <a href="https://pika.art" target="_blank">
+                            <span>访问网站</span>
+                            <svg class="arrow-icon" viewBox="0 0 24 24">
+                                <path d="M5 12h14M12 5l7 7-7 7"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+                <div class="tool-card" data-keywords="d-id ai video avatar digital human 数字人">
+                    <div class="tool-header">
+                        <div class="logo-wrapper">
+                            <img 
+                                src="images/logos/did.png" 
+                                alt="D-ID Logo" 
+                                class="tool-logo"
+                                loading="lazy"
+                                data-initial="DID"
+                            >
+                        </div>
+                        <div class="tool-info">
+                            <h3>D-ID</h3>
+                            <span class="visits">日访问量：250万+</span>
+                        </div>
+                    </div>
+                    <p>AI数字人视频生成平台，可创建逼真的数字人视频。</p>
+                    <div class="tool-footer">
+                        <a href="https://www.d-id.com" target="_blank">
+                            <span>访问网站</span>
+                            <svg class="arrow-icon" viewBox="0 0 24 24">
+                                <path d="M5 12h14M12 5l7 7-7 7"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+                <div class="tool-card" data-keywords="heygen ai video generation voice 视频生成">
+                    <div class="tool-header">
+                        <div class="logo-wrapper">
+                            <img 
+                                src="images/logos/heygen.png" 
+                                alt="HeyGen Logo" 
+                                class="tool-logo"
+                                loading="lazy"
+                                data-initial="HEY"
+                            >
+                        </div>
+                        <div class="tool-info">
+                            <h3>HeyGen</h3>
+                            <span class="visits">日访问量：200万+</span>
+                        </div>
+                    </div>
+                    <p>AI视频生成和配音平台，支持多语言。</p>
+                    <div class="tool-footer">
+                        <a href="https://www.heygen.com" target="_blank">
+                            <span>访问网站</span>
+                            <svg class="arrow-icon" viewBox="0 0 24 24">
+                                <path d="M5 12h14M12 5l7 7-7 7"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+                <div class="tool-card" data-keywords="descript ai video editing 视频编辑">
+                    <div class="tool-header">
+                        <div class="logo-wrapper">
+                            <img 
+                                src="images/logos/descript.png" 
+                                alt="Descript Logo" 
+                                class="tool-logo"
+                                loading="lazy"
+                                data-initial="DESC"
+                            >
+                        </div>
+                        <div class="tool-info">
+                            <h3>Descript</h3>
+                            <span class="visits">日访问量：180万+</span>
+                        </div>
+                    </div>
+                    <p>AI视频编辑工具，支持文本编辑视频。</p>
+                    <div class="tool-footer">
+                        <a href="https://www.descript.com" target="_blank">
+                            <span>访问网站</span>
+                            <svg class="arrow-icon" viewBox="0 0 24 24">
+                                <path d="M5 12h14M12 5l7 7-7 7"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+                <div class="tool-card" data-keywords="kapwing video editing ai online 在线编辑">
+                    <div class="tool-header">
+                        <div class="logo-wrapper">
+                            <img 
+                                src="images/logos/kapwing.png" 
+                                alt="Kapwing Logo" 
+                                class="tool-logo"
+                                loading="lazy"
+                                data-initial="KAP"
+                            >
+                        </div>
+                        <div class="tool-info">
+                            <h3>Kapwing</h3>
+                            <span class="visits">日访问量：150万+</span>
+                        </div>
+                    </div>
+                    <p>在线视频编辑平台，集成AI功能。</p>
+                    <div class="tool-footer">
+                        <a href="https://www.kapwing.com" target="_blank">
+                            <span>访问网站</span>
+                            <svg class="arrow-icon" viewBox="0 0 24 24">
+                                <path d="M5 12h14M12 5l7 7-7 7"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 在视频生成类后添加PPT生成类 -->
+        <section class="category" data-type="ppt">
+            <h2>
+                <img src="images/icons/ppt.svg" alt="PPT" class="category-icon">
+                PPT生成
+            </h2>
+            <div class="tools-grid">
+                <div class="tool-card" data-keywords="ppt presentation slides ai powerpoint 演示 幻灯片">
+                    <div class="tool-header">
+                        <img src="images/logos/beautiful.png" alt="Beautiful.ai Logo" class="tool-logo">
+                        <div class="tool-info">
+                            <h3>Beautiful.ai</h3>
+                            <span class="visits">日访问量：300万+</span>
+                        </div>
+                    </div>
+                    <p>AI驱动的演示文稿制作工具，自动优化设计和布局。</p>
+                    <div class="tool-footer">
+                        <a href="https://www.beautiful.ai" target="_blank">
+                            <span>访问网站</span>
+                            <svg class="arrow-icon" viewBox="0 0 24 24">
+                                <path d="M5 12h14M12 5l7 7-7 7"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="tool-card" data-keywords="gamma slides presentation ai design 演示 幻灯片">
+                    <div class="tool-header">
+                        <img src="images/logos/gamma.png" alt="Gamma Logo" class="tool-logo">
+                        <div class="tool-info">
+                            <h3>Gamma</h3>
+                            <span class="visits">日访问量：250万+</span>
+                        </div>
+                    </div>
+                    <p>基于AI的演示文稿生成工具，支持一键生成完整PPT。</p>
+                    <div class="tool-footer">
+                        <a href="https://gamma.app" target="_blank">
+                            <span>访问网站</span>
+                            <svg class="arrow-icon" viewBox="0 0 24 24">
+                                <path d="M5 12h14M12 5l7 7-7 7"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="tool-card" data-keywords="slidesai powerpoint presentation design 演示 幻灯片">
+                    <div class="tool-header">
+                        <img src="images/logos/slidesai.png" alt="SlidesAI Logo" class="tool-logo">
+                        <div class="tool-info">
+                            <h3>SlidesAI</h3>
+                            <span class="visits">日访问量：200万+</span>
+                        </div>
+                    </div>
+                    <p>AI驱动的PPT内容生成工具，支持多种主题和风格。</p>
+                    <div class="tool-footer">
+                        <a href="https://www.slidesai.io" target="_blank">
+                            <span>访问网站</span>
+                            <svg class="arrow-icon" viewBox="0 0 24 24">
+                                <path d="M5 12h14M12 5l7 7-7 7"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="tool-card" data-keywords="tome ai storytelling presentation slides 演示">
+                    <div class="tool-header">
+                        <img src="images/logos/tome.png" alt="Tome Logo" class="tool-logo">
+                        <div class="tool-info">
+                            <h3>Tome</h3>
+                            <span class="visits">日访问量：180万+</span>
+                        </div>
+                    </div>
+                    <p>AI驱动的故事叙述工具，生成引人入胜的演示文稿。</p>
+                    <div class="tool-footer">
+                        <a href="https://tome.app" target="_blank">
+                            <span>访问网站</span>
+                            <svg class="arrow-icon" viewBox="0 0 24 24">
+                                <path d="M5 12h14M12 5l7 7-7 7"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="tool-card" data-keywords="pitch ai presentation deck slides 演示">
+                    <div class="tool-header">
+                        <img src="images/logos/pitch.png" alt="Pitch Logo" class="tool-logo">
+                        <div class="tool-info">
+                            <h3>Pitch</h3>
+                            <span class="visits">日访问量：150万+</span>
+                        </div>
+                    </div>
+                    <p>协作式演示文稿平台，集成AI辅助功能。</p>
+                    <div class="tool-footer">
+                        <a href="https://pitch.com" target="_blank">
+                            <span>访问网站</span>
+                            <svg class="arrow-icon" viewBox="0 0 24 24">
+                                <path d="M5 12h14M12 5l7 7-7 7"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2024 AI导航 - 持续更新中...</p>
+    </footer>
+
+    <!-- 添加搜索功能 -->
+    <script>
+        // 等待DOM加载完成
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchInput = document.getElementById('searchInput');
+            if (!searchInput) return;
+
+            searchInput.addEventListener('input', function(e) {
+                const searchTerm = e.target.value.toLowerCase().trim();
+                const cards = document.querySelectorAll('.tool-card');
+                
+                cards.forEach(card => {
+                    const title = card.querySelector('h3')?.textContent.toLowerCase() || '';
+                    const description = card.querySelector('p')?.textContent.toLowerCase() || '';
+                    const category = card.closest('.category')?.querySelector('h2')?.textContent.toLowerCase() || '';
+                    const keywords = card.getAttribute('data-keywords')?.toLowerCase() || '';
+                    
+                    if (title.includes(searchTerm) || 
+                        description.includes(searchTerm) || 
+                        category.includes(searchTerm) ||
+                        keywords.includes(searchTerm)) {
+                        card.style.display = '';
+                        if (searchTerm) {
+                            highlightText(card, searchTerm);
+                        } else {
+                            removeHighlight(card);
+                        }
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+
+                // 处理分类标题的显示/隐藏
+                document.querySelectorAll('.category').forEach(category => {
+                    const visibleCards = Array.from(category.querySelectorAll('.tool-card')).filter(card => 
+                        card.style.display !== 'none'
+                    ).length;
+                    category.style.display = visibleCards ? '' : 'none';
+                });
+            });
+
+            // 高亮匹配文本
+            function highlightText(element, searchTerm) {
+                const nodes = element.querySelectorAll('h3, p');
+                nodes.forEach(node => {
+                    const text = node.textContent;
+                    if (!text.toLowerCase().includes(searchTerm)) return;
+                    
+                    const regex = new RegExp(`(${searchTerm})`, 'gi');
+                    const highlightedText = text.replace(regex, '<span class="highlight">$1</span>');
+                    node.innerHTML = highlightedText;
+                });
+            }
+
+            // 移除高亮
+            function removeHighlight(element) {
+                const nodes = element.querySelectorAll('h3, p');
+                nodes.forEach(node => {
+                    node.innerHTML = node.textContent;
+                });
+            }
+        });
+
+        // 检查浏览器是否支持webp
+        function checkWebpSupport() {
+            const elem = document.createElement('canvas');
+            if (!!(elem.getContext && elem.getContext('2d'))) {
+                return elem.toDataURL('image/webp').indexOf('data:image/webp') === 0;
+            }
+            return false;
+        }
+
+        // 图片加载处理
+        document.querySelectorAll('.tool-logo').forEach(img => {
+            // 设置初始字母
+            const name = img.alt.replace(' Logo', '').split(' ')[0];
+            img.setAttribute('data-initial', name[0]);
+
+            // 加载成功
+            img.addEventListener('load', function() {
+                this.classList.add('loaded');
+                this.style.opacity = '1';
+            });
+            
+            // 加载失败
+            img.addEventListener('error', function() {
+                this.classList.add('error');
+                this.style.opacity = '0';
+                
+                // 创建文字替代
+                const initial = document.createElement('span');
+                initial.className = 'logo-initial';
+                initial.textContent = name[0];
+                this.parentNode.appendChild(initial);
+            });
+        });
+    </script>
+</body>
+</html> 
