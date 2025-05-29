@@ -121,7 +121,12 @@
             <li>JavaScript计算: 2000ms作为基准线，耗时越短得分越高 <span class="detail">(得分=max(0, 100 - 耗时/20))</span></li>
             <li>渲染性能: 30 FPS作为基准线，帧率越高得分越高 <span class="detail">(得分=min(100, FPS × 100/30))</span></li>
             <li>网络性能: 1000ms作为基准线，耗时越短得分越高 <span class="detail">(得分=max(0, 100 - 耗时/10))</span></li>
-            <li>页面加载: 3000ms作为基准线，耗时越短得分越高 <span class="detail">(得分=max(0, 100 - 耗时/30))</span></li>
+            <li>页面加载: <span class="detail">
+                - FCP (首次内容绘制) ≤ 1800ms（权重30%）<br>
+                - LCP (最大内容绘制) ≤ 2500ms（权重30%）<br>
+                - DCL (DOM解析完成) ≤ 1000ms（权重20%）<br>
+                - TTI (可交互时间) ≤ 3500ms（权重20%）
+            </span></li>
             <li>总分计算: 五项得分的算术平均值</li>
         </ul>
     </div>
@@ -472,63 +477,76 @@
                 <!DOCTYPE html>
                 <html>
                 <head>
-                    <style>
-                        .test-element { 
-                            width: 100px; 
-                            height: 100px; 
-                            background: #f0f0f0; 
-                            margin: 5px;
-                            transition: all 0.3s;
-                        }
-                        .test-element:hover {
-                            transform: scale(1.05);
-                        }
-                    </style>
                     <script>
                         const marks = {};
+                        let lcpValue = 0;
+                        let ttiValue = 0;
                         
                         // 记录性能标记点
-                        function mark(name) {
-                            marks[name] = performance.now();
+                        function mark(name, value = performance.now()) {
+                            marks[name] = value;
                             window.parent.postMessage({
                                 type: 'performanceMark',
                                 name: name,
-                                time: marks[name]
+                                time: value
                             }, '*');
                         }
 
-                        // DOMContentLoaded事件
+                        // LCP观察器
+                        new PerformanceObserver((list) => {
+                            const entries = list.getEntries();
+                            const lastEntry = entries[entries.length - 1];
+                            lcpValue = lastEntry.startTime;
+                            mark('LCP', lcpValue);
+                        }).observe({entryTypes: ['largest-contentful-paint']});
+
+                        // FCP观察器
+                        new PerformanceObserver((list) => {
+                            const entry = list.getEntries()[0];
+                            mark('FCP', entry.startTime);
+                        }).observe({entryTypes: ['paint']});
+
+                        // TTI计算
+                        function calculateTTI() {
+                            const start = performance.now();
+                            let count = 0;
+                            const interval = setInterval(() => {
+                                const end = performance.now();
+                                if (end - start > 50) { // 检测到长任务
+                                    clearInterval(interval);
+                                    ttiValue = end;
+                                    mark('TTI', end);
+                                }
+                                if (count++ > 10) { // 防止无限循环
+                                    clearInterval(interval);
+                                }
+                            }, 50);
+                        }
+
                         document.addEventListener('DOMContentLoaded', () => {
-                            mark('DOMContentLoaded');
+                            mark('DCL');
+                            calculateTTI();
                         });
 
-                        // 页面加载完成事件
                         window.addEventListener('load', () => {
                             mark('load');
-                            
-                            // 计算每个阶段的耗时
-                            const measurements = {
-                                domLoading: marks.DOMContentLoaded - marks.scriptStart,
-                                resourceLoading: marks.load - marks.DOMContentLoaded,
-                                totalTime: marks.load - marks.scriptStart
-                            };
-                            
-                            window.parent.postMessage({
-                                type: 'loadComplete',
-                                measurements: measurements
-                            }, '*');
+                            setTimeout(() => {
+                                const measurements = {
+                                    fcp: marks.FCP || 0,
+                                    lcp: lcpValue,
+                                    dcl: marks.DCL - marks.scriptStart,
+                                    tti: ttiValue - marks.scriptStart,
+                                    load: marks.load - marks.scriptStart
+                                };
+                                
+                                window.parent.postMessage({
+                                    type: 'loadComplete',
+                                    measurements: measurements
+                                }, '*');
+                            }, 500); // 等待所有性能指标收集完成
                         });
 
-                        // 首次内容绘制
-                        const observer = new PerformanceObserver((list) => {
-                            for (const entry of list.getEntries()) {
-                                if (entry.name === 'first-contentful-paint') {
-                                    mark('FCP');
-                                    observer.disconnect();
-                                }
-                            }
-                        });
-                        observer.observe({ entryTypes: ['paint'] });
+                        mark('scriptStart');
                     <\/script>
                 </head>
                 <body>
@@ -591,20 +609,30 @@
                     
                     if (event.data.type === 'loadComplete') {
                         measurements = event.data.measurements;
-                        const endTime = performance.now();
-                        const duration = (endTime - startTime).toFixed(2);
-                        testResults.pageLoad = parseFloat(duration);
+                        const fcpScore = Math.max(0, 100 - (measurements.fcp / 1800 * 100));
+                        const lcpScore = Math.max(0, 100 - (measurements.lcp / 2500 * 100));
+                        const dclScore = Math.max(0, 100 - (measurements.dcl / 1000 * 100));
+                        const ttiScore = Math.max(0, 100 - (measurements.tti / 3500 * 100));
                         
-                        // 显示详细的性能指标
+                        // 计算加权平均分
+                        const pageLoadScore = (
+                            fcpScore * 0.3 + 
+                            lcpScore * 0.3 + 
+                            dclScore * 0.2 + 
+                            ttiScore * 0.2
+                        ).toFixed(2);
+                        
+                        testResults.pageLoad = parseFloat(pageLoadScore);
+                        
                         document.getElementById('pageLoadResult').textContent = 
-                            `页面加载总用时: ${duration}ms\n` +
-                            `DOM解析: ${measurements.domLoading.toFixed(2)}ms\n` +
-                            `资源加载: ${measurements.resourceLoading.toFixed(2)}ms`;
+                            `页面加载得分: ${pageLoadScore}\n` +
+                            `FCP: ${measurements.fcp.toFixed(0)}ms (得分: ${fcpScore.toFixed(1)})\n` +
+                            `LCP: ${measurements.lcp.toFixed(0)}ms (得分: ${lcpScore.toFixed(1)})\n` +
+                            `DCL: ${measurements.dcl.toFixed(0)}ms (得分: ${dclScore.toFixed(1)})\n` +
+                            `TTI: ${measurements.tti.toFixed(0)}ms (得分: ${ttiScore.toFixed(1)})`;
                         
-                        // 清理
                         document.body.removeChild(testFrame);
                         window.removeEventListener('message', loadHandler);
-                        updateLoadProgress('complete', 100);
                         resolve();
                     }
                 });
