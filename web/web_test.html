@@ -480,9 +480,11 @@
                     <script>
                         const marks = {};
                         let lcpValue = 0;
+                        let lcpElement = null;
+                        let lcpResolved = false;
                         let ttiValue = 0;
                         
-                        // 记录性能标记点
+                        // 将mark函数定义移到最前面
                         function mark(name, value = performance.now()) {
                             marks[name] = value;
                             window.parent.postMessage({
@@ -491,6 +493,33 @@
                                 time: value
                             }, '*');
                         }
+                        
+                        // 创建一个Promise来等待LCP完成
+                        const lcpPromise = new Promise(resolve => {
+                            new PerformanceObserver((entries) => {
+                                entries.getEntries().forEach(entry => {
+                                    // 更新LCP值
+                                    if (entry.startTime > lcpValue) {
+                                        lcpValue = entry.startTime;
+                                        lcpElement = entry.element;
+                                        if (!lcpResolved) {
+                                            mark('LCP', lcpValue);
+                                        }
+                                    }
+                                });
+                            }).observe({
+                                entryTypes: ['largest-contentful-paint'],
+                                buffered: true
+                            });
+
+                            // 5秒后强制解析LCP
+                            setTimeout(() => {
+                                if (!lcpResolved) {
+                                    lcpResolved = true;
+                                    resolve(lcpValue);
+                                }
+                            }, 5000);
+                        });
 
                         // LCP观察器
                         new PerformanceObserver((list) => {
@@ -530,7 +559,11 @@
 
                         window.addEventListener('load', () => {
                             mark('load');
-                            setTimeout(() => {
+                            // 等待LCP稳定后再发送结果
+                            Promise.race([
+                                lcpPromise,
+                                new Promise(resolve => setTimeout(resolve, 3000))
+                            ]).then(() => {
                                 const measurements = {
                                     fcp: marks.FCP || 0,
                                     lcp: lcpValue,
@@ -543,57 +576,74 @@
                                     type: 'loadComplete',
                                     measurements: measurements
                                 }, '*');
-                            }, 500); // 等待所有性能指标收集完成
+                            });
                         });
 
                         mark('scriptStart');
                     <\/script>
                 </head>
                 <body>
+                    <!-- 添加一个大型内容元素作为LCP候选 -->
+                    <div class="main-content">
+                        性能测试内容
+                    </div>
+                    
+                    <!-- 添加其他测试内容 -->
                     <div id="content">
                         ${Array(20).fill(0).map((_, i) => `
                             <div class="test-element">
-                                <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7">
                                 <p>测试内容 ${i}</p>
                             </div>
                         `).join('')}
                     </div>
-                    <script>
-                        mark('scriptStart');
-                        // 模拟复杂JavaScript执行
-                        for(let i = 0; i < 1000; i++) {
-                            Math.sqrt(i);
-                        }
-                        mark('scriptEnd');
-                        
-                        // 模拟动态内容加载
-                        setTimeout(() => {
-                            const div = document.createElement('div');
-                            div.className = 'test-element';
-                            div.innerHTML = '<p>动态加载内容</p>';
-                            document.getElementById('content').appendChild(div);
-                            mark('dynamicContent');
-                        }, 100);
-                    <\/script>
                 </body>
                 </html>
             `;
 
             return new Promise((resolve) => {
+                // 修改进度阶段定义，使其更加细致
                 const stages = {
                     start: 0,
-                    DOMContentLoaded: 25,
+                    scriptStart: 10,
+                    DCL: 30,
                     FCP: 50,
-                    dynamicContent: 75,
-                    load: 100
+                    LCP: 70,
+                    TTI: 85,
+                    load: 95,
+                    complete: 100
                 };
                 
                 let currentStage = 'start';
                 let measurements = {};
+                let progressTimeout;
 
                 function updateLoadProgress(stage, percent) {
+                    // 清除之前的超时
+                    if (progressTimeout) {
+                        clearTimeout(progressTimeout);
+                    }
+
+                    // 平滑过渡到下一阶段
+                    const currentPercent = parseInt(document.getElementById('pageLoadProgress').style.width) || 0;
+                    const targetPercent = percent;
+                    const duration = 500; // 过渡时间
+                    const startTime = performance.now();
+
+                    function animate() {
+                        const now = performance.now();
+                        const elapsed = now - startTime;
+                        const progress = Math.min(elapsed / duration, 1);
+                        
+                        const currentValue = currentPercent + (targetPercent - currentPercent) * progress;
+                        updateProgress('pageLoadProgress', currentValue);
+
+                        if (progress < 1) {
+                            progressTimeout = requestAnimationFrame(animate);
+                        }
+                    }
+
+                    progressTimeout = requestAnimationFrame(animate);
                     currentStage = stage;
-                    updateProgress('pageLoadProgress', percent);
                 }
 
                 // 监听iframe消息
@@ -636,6 +686,14 @@
                         resolve();
                     }
                 });
+
+                // 设置超时，确保进度条不会卡住
+                setTimeout(() => {
+                    if (currentStage !== 'complete') {
+                        updateLoadProgress('complete', stages.complete);
+                        resolve();
+                    }
+                }, 10000);
 
                 // 初始进度
                 updateLoadProgress('start', stages.start);
