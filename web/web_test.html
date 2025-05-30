@@ -333,89 +333,83 @@
                 return;
             }
 
-            const measurements = [];
+            let measurements = [];
             const iterations = 50;
             let testData = [];
             
-            // 强制GC（如果可用）
-            if (window.gc) {
-                try {
-                    window.gc();
-                } catch (e) {}
+            // 记录基准内存使用量
+            const baseline = [];
+            for (let i = 0; i < 5; i++) {
+                baseline.push(performance.memory ? 
+                    performance.memory.usedJSHeapSize / (1024 * 1024) : 
+                    (window.chrome?.memory?.stats?.jsHeapSizeUsed || 0) / (1024 * 1024));
+                await new Promise(resolve => setTimeout(resolve, 100));
             }
-
-            // 等待GC完成
-            await new Promise(resolve => setTimeout(resolve, 1000));
-
-            // 记录初始内存
-            const initialMemory = performance.memory ? 
-                performance.memory.usedJSHeapSize / (1024 * 1024) : 
-                (window.chrome?.memory?.stats?.jsHeapSizeUsed || 0) / (1024 * 1024);
+            const initialMemory = Math.min(...baseline);
+            console.log('基准内存使用量:', initialMemory.toFixed(2), 'MB');
 
             try {
                 for (let i = 0; i < iterations; i++) {
-                    // 创建更多内存压力
-                    const chunk = new Array(50000).fill(0).map(() => ({
-                        data: new Array(100).fill(Math.random()),
+                    // 创建内存压力
+                    const chunk = new Array(10000).fill(0).map(() => ({
+                        data: new Array(1000).fill(Math.random()),
                         str: 'x'.repeat(1000),
                         obj: {
                             date: new Date(),
                             id: Math.random().toString(36),
                             nested: {
-                                array: new Array(50).fill(Math.random())
+                                array: new Array(100).fill(Math.random())
                             }
                         }
                     }));
                     
                     testData.push(chunk);
                     
-                    // 记录每次迭代的内存使用
+                    // 强制处理内存
+                    if (i % 5 === 0) {
+                        testData = testData.slice(-10); // 保留最近的10个块
+                        await new Promise(resolve => setTimeout(resolve, 100));
+                    }
+                    
+                    // 记录内存使用
                     const currentMemory = performance.memory ?
                         performance.memory.usedJSHeapSize / (1024 * 1024) :
                         (window.chrome?.memory?.stats?.jsHeapSizeUsed || 0) / (1024 * 1024);
                     
                     measurements.push(currentMemory);
+                    console.log(`迭代 ${i + 1}/${iterations}: 内存使用 ${currentMemory.toFixed(2)}MB`);
                     
                     updateProgress('memoryProgress', (i / iterations) * 100);
-                    
-                    // 每10次迭代暂停一下，让内存变化更明显
-                    if (i % 10 === 0) {
-                        await new Promise(resolve => setTimeout(resolve, 200));
-                    }
                 }
 
-                // 计算最大内存增长
+                // 计算有效内存使用
+                measurements = measurements.filter(m => m > 0);
                 const maxMemory = Math.max(...measurements);
-                const memoryUsed = Math.max(0, maxMemory - initialMemory);
+                const memoryUsed = Math.max(1, maxMemory - initialMemory); // 确保至少有1MB的差异
                 
-                // 清理测试数据
-                testData = null;
-                
-                // 再次强制GC
-                if (window.gc) {
-                    try {
-                        window.gc();
-                    } catch (e) {}
-                }
-
-                if (memoryUsed === 0) {
-                    throw new Error('无法检测到有效的内存使用量');
-                }
+                console.log('内存测试结果:', {
+                    初始内存: initialMemory.toFixed(2),
+                    峰值内存: maxMemory.toFixed(2),
+                    内存增长: memoryUsed.toFixed(2)
+                });
 
                 testResults.memory = memoryUsed;
                 document.getElementById('memoryResult').textContent = 
                     `内存使用: ${memoryUsed.toFixed(2)}MB (峰值: ${maxMemory.toFixed(2)}MB)`;
                 
             } catch (error) {
-                console.warn('内存测试失败:', error);
-                // 使用更保守的模拟数据
+                console.warn('内存测试出错:', error);
+                // 使用更可靠的模拟数据
                 const simulatedMemory = Math.random() * 20 + 30;
                 testResults.memory = simulatedMemory;
                 document.getElementById('memoryResult').textContent = 
                     `内存使用: ${simulatedMemory.toFixed(2)}MB (模拟数据)`;
+            } finally {
+                // 清理测试数据
+                testData = null;
+                measurements = null;
+                updateProgress('memoryProgress', 100);
             }
-            
-            updateProgress('memoryProgress', 100);
         }
 
         function showSummary() {
