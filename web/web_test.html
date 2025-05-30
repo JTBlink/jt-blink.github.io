@@ -115,20 +115,27 @@
     <h1>浏览器性能测试</h1>
     
     <div class="rules">
-        <h3>测试评分规则说明</h3>
+        <h3>测试评分规则说明 <a href="./test_rules.html" target="_blank" style="font-size: 0.8em; margin-left: 10px;">查看详细说明</a></h3>
         <ul>
-            <li>DOM操作: 1000ms作为基准线，耗时越短得分越高 <span class="detail">(得分=max(0, 100 - 耗时/10))</span></li>
-            <li>JavaScript计算: 2000ms作为基准线，耗时越短得分越高 <span class="detail">(得分=max(0, 100 - 耗时/20))</span></li>
-            <li>渲染性能: 30 FPS作为基准线，帧率越高得分越高 <span class="detail">(得分=min(100, FPS × 100/30))</span></li>
-            <li>网络性能: 1000ms作为基准线，耗时越短得分越高 <span class="detail">(得分=max(0, 100 - 耗时/10))</span></li>
-            <li>内存性能: 50MB作为基准线，使用越少得分越高 <span class="detail">(得分=max(0, 100 - 使用内存/0.5))</span></li>
-            <li>页面加载: <span class="detail">
-                - FCP (首次内容绘制) ≤ 1800ms（权重30%）<br>
-                - LCP (最大内容绘制) ≤ 2500ms（权重30%）<br>
-                - DCL (DOM解析完成) ≤ 1000ms（权重20%）<br>
-                - TTI (可交互时间) ≤ 3500ms（权重20%）
-            </span></li>
-            <li>总分计算: 五项得分的算术平均值</li>
+            <li>DOM操作性能 <span class="detail">(1000ms基准)</span>
+                <div class="detail">创建1000个DOM元素，越快越好</div>
+            </li>
+            <li>JavaScript性能 <span class="detail">(2000ms基准)</span>
+                <div class="detail">100万次数学运算，包含开方和三角函数</div>
+            </li>
+            <li>渲染性能 <span class="detail">(30 FPS基准)</span>
+                <div class="detail">动画流畅度测试，包含变形和颜色渐变</div>
+            </li>
+            <li>网络性能 <span class="detail">(1000ms基准)</span>
+                <div class="detail">多源资源加载测试，禁用缓存</div>
+            </li>
+            <li>内存性能 <span class="detail">(50MB基准)</span>
+                <div class="detail">渐进式内存压力测试，自动清理</div>
+            </li>
+            <li>页面加载性能 <span class="detail">(加权评分)</span>
+                <div class="detail">FCP/LCP/DCL/TTI四项指标综合评估</div>
+            </li>
+            <li>总分：所有测试得分的算术平均值</li>
         </ul>
     </div>
 

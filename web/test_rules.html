@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>浏览器性能测试方案说明</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #1565c0;
+            border-bottom: 2px solid #1565c0;
+            padding-bottom: 10px;
+        }
+        h2 {
+            color: #2196F3;
+            margin-top: 30px;
+        }
+        h3 {
+            color: #0d47a1;
+            margin-top: 25px;
+        }
+        .test-item {
+            background: #e3f2fd;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 6px;
+        }
+        .details {
+            background: #fff;
+            padding: 15px;
+            margin: 10px 0;
+            border-left: 4px solid #2196F3;
+        }
+        .formula {
+            background: #fffde7;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+            font-family: monospace;
+        }
+        .note {
+            background: #fff3e0;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 6px;
+        }
+        .benchmark {
+            font-weight: bold;
+            color: #f57c00;
+        }
+        ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        li {
+            margin: 8px 0;
+            padding-left: 20px;
+            position: relative;
+        }
+        li:before {
+            content: "•";
+            color: #2196F3;
+            position: absolute;
+            left: 0;
+        }
+        .scoring {
+            background: #e8f5e9;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>浏览器性能测试方案说明</h1>
+        
+        <h2>测试项目及方法</h2>
+
+        <div class="test-item">
+            <h3>1. DOM操作性能</h3>
+            <div class="details">
+                <p><strong>测试方法：</strong>创建1000个DOM元素并测量完成时间</p>
+                <p><strong>执行细节：</strong></p>
+                <ul>
+                    <li>批量创建div元素并设置文本内容</li>
+                    <li>每100次操作暂停一次避免阻塞</li>
+                    <li>记录整个过程的耗时</li>
+                </ul>
+                <p class="benchmark">基准线：1000ms</p>
+                <div class="formula">得分 = max(0, 100 - 耗时/10)</div>
+            </div>
+        </div>
+
+        <div class="test-item">
+            <h3>2. JavaScript计算性能</h3>
+            <div class="details">
+                <p><strong>测试方法：</strong>执行100万次数学运算</p>
+                <ul>
+                    <li>包含开方和三角函数计算</li>
+                    <li>每10000次计算检查一次进度</li>
+                    <li>监测整体运算时间</li>
+                </ul>
+                <p class="benchmark">基准线：2000ms</p>
+                <div class="formula">得分 = max(0, 100 - 耗时/20)</div>
+            </div>
+        </div>
+
+        <div class="test-item">
+            <h3>3. 渲染性能</h3>
+            <div class="details">
+                <p><strong>测试方法：</strong>动画帧率测试</p>
+                <ul>
+                    <li>执行100帧动画</li>
+                    <li>包含变形和颜色渐变</li>
+                    <li>记录并分析帧率数据</li>
+                    <li>过滤异常值提高准确性</li>
+                </ul>
+                <p class="benchmark">基准线：30 FPS</p>
+                <div class="formula">得分 = min(100, FPS × 100/30)</div>
+            </div>
+        </div>
+
+        <div class="test-item">
+            <h3>4. 网络性能</h3>
+            <div class="details">
+                <p><strong>测试方法：</strong>多源资源加载测试</p>
+                <ul>
+                    <li>测试多个网站图标加载</li>
+                    <li>使用no-cors模式和禁用缓存</li>
+                    <li>包含失败重试机制</li>
+                    <li>平均响应时间计算</li>
+                </ul>
+                <p class="benchmark">基准线：1000ms</p>
+                <div class="formula">得分 = max(0, 100 - 耗时/10)</div>
+            </div>
+        </div>
+
+        <div class="test-item">
+            <h3>5. 内存性能</h3>
+            <div class="details">
+                <p><strong>测试方法：</strong>渐进式内存压力测试</p>
+                <ul>
+                    <li>循环创建数组和对象</li>
+                    <li>监控内存使用增长</li>
+                    <li>包含自动清理机制</li>
+                    <li>设置最大限制和警告</li>
+                </ul>
+                <p class="benchmark">基准线：50MB</p>
+                <div class="formula">得分 = max(0, 100 - 使用内存/0.5)</div>
+            </div>
+        </div>
+
+        <div class="test-item">
+            <h3>6. 页面加载性能</h3>
+            <div class="details">
+                <p><strong>测试方法：</strong>关键性能指标综合测试</p>
+                <div class="scoring">
+                    <p><strong>测试指标：</strong></p>
+                    <ul>
+                        <li>FCP (首次内容绘制) ≤ 1800ms（权重30%）</li>
+                        <li>LCP (最大内容绘制) ≤ 2500ms（权重30%）</li>
+                        <li>DCL (DOM解析完成) ≤ 1000ms（权重20%）</li>
+                        <li>TTI (可交互时间) ≤ 3500ms（权重20%）</li>
+                    </ul>
+                </div>
+                <p><strong>计分方法：</strong>各指标得分的加权平均值</p>
+            </div>
+        </div>
+
+        <h2>总分计算</h2>
+        <div class="scoring">
+            <p>六个测试项目得分的算术平均值</p>
+            <p><strong>分数区间说明：</strong></p>
+            <ul>
+                <li>90-100分：性能极佳</li>
+                <li>80-89分：性能良好</li>
+                <li>60-79分：性能一般</li>
+                <li>0-59分：需要优化</li>
+            </ul>
+        </div>
+
+        <div class="note">
+            <h3>测试注意事项</h3>
+            <ul>
+                <li>建议在稳定的网络环境下测试</li>
+                <li>关闭其他占用资源的程序</li>
+                <li>浏览器建议使用无痕模式</li>
+                <li>必要时可多次测试取平均值</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>
