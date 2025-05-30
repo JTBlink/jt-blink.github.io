@@ -608,8 +608,7 @@
                         let lcpElement = null;
                         let lcpResolved = false;
                         let ttiValue = 0;
-                        
-                        // 将mark函数定义移到最前面
+
                         function mark(name, value = performance.now()) {
                             marks[name] = value;
                             window.parent.postMessage({
@@ -618,60 +617,66 @@
                                 time: value
                             }, '*');
                         }
-                        
-                        // 创建一个Promise来等待LCP完成
+
+                        // 优化性能观察器
                         const lcpPromise = new Promise(resolve => {
-                            new PerformanceObserver((entries) => {
-                                entries.getEntries().forEach(entry => {
-                                    // 更新LCP值
-                                    if (entry.startTime > lcpValue) {
+                            let lcpObserver;
+                            try {
+                                lcpObserver = new PerformanceObserver((entryList) => {
+                                    const entries = entryList.getEntries();
+                                    entries.forEach(entry => {
+                                        // 只处理最新的LCP
                                         lcpValue = entry.startTime;
                                         lcpElement = entry.element;
-                                        if (!lcpResolved) {
-                                            mark('LCP', lcpValue);
-                                        }
-                                    }
+                                        mark('LCP', lcpValue);
+                                    });
                                 });
-                            }).observe({
-                                entryTypes: ['largest-contentful-paint'],
-                                buffered: true
-                            });
+                                
+                                lcpObserver.observe({
+                                    type: 'largest-contentful-paint',
+                                    buffered: true
+                                });
+                            } catch (e) {
+                                console.warn('LCP观察器初始化失败:', e);
+                                resolve(0);
+                                return;
+                            }
 
-                            // 5秒后强制解析LCP
                             setTimeout(() => {
-                                if (!lcpResolved) {
-                                    lcpResolved = true;
-                                    resolve(lcpValue);
+                                if (lcpObserver) {
+                                    lcpObserver.disconnect();
                                 }
+                                resolve(lcpValue);
                             }, 5000);
                         });
 
-                        // LCP观察器
-                        new PerformanceObserver((list) => {
-                            const entries = list.getEntries();
-                            const lastEntry = entries[entries.length - 1];
-                            lcpValue = lastEntry.startTime;
-                            mark('LCP', lcpValue);
-                        }).observe({entryTypes: ['largest-contentful-paint']});
-
                         // FCP观察器
-                        new PerformanceObserver((list) => {
-                            const entry = list.getEntries()[0];
-                            mark('FCP', entry.startTime);
-                        }).observe({entryTypes: ['paint']});
+                        try {
+                            new PerformanceObserver((entryList) => {
+                                const [entry] = entryList.getEntries();
+                                if (entry) {
+                                    mark('FCP', entry.startTime);
+                                }
+                            }).observe({
+                                type: 'paint',
+                                buffered: true
+                            });
+                        } catch (e) {
+                            console.warn('FCP观察器初始化失败:', e);
+                        }
 
-                        // TTI计算
+                        // TTI计算保持不变
                         function calculateTTI() {
                             const start = performance.now();
                             let count = 0;
                             const interval = setInterval(() => {
                                 const end = performance.now();
-                                if (end - start > 50) { // 检测到长任务
+                                if (end - start > 50) {
                                     clearInterval(interval);
                                     ttiValue = end;
                                     mark('TTI', end);
                                 }
-                                if (count++ > 10) { // 防止无限循环
+                                if (count++ > 10) {
                                     clearInterval(interval);
                                 }
                             }, 50);
