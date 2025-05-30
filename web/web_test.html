@@ -264,8 +264,13 @@
                 async function animate() {
                     const now = performance.now();
                     const deltaTime = now - lastTime;
-                    const currentFps = 1000 / deltaTime;
-                    fpsValues.push(currentFps);
+                    const currentFps = 1000 / Math.max(1, deltaTime); // 防止除以0
+                    
+                    // 过滤明显异常的帧率值
+                    if (currentFps <= 120 && currentFps > 0) { // 限制最大帧率为120
+                        fpsValues.push(currentFps);
+                        console.debug(`Frame ${frameCount}: ${currentFps.toFixed(1)} FPS (deltaTime: ${deltaTime.toFixed(2)}ms)`);
+                    }
                     lastTime = now;
 
                     const progress = frameCount / frames;
@@ -284,13 +289,25 @@
                         await animate();
                     } else {
                         document.body.removeChild(container);
-                        // 计算平均帧率,去掉最高和最低的10%以获得更准确的结果
+                        // 计算平均帧率，使用更严格的过滤
                         fpsValues.sort((a, b) => a - b);
-                        const trimAmount = Math.floor(fpsValues.length * 0.1);
+                        const trimAmount = Math.floor(fpsValues.length * 0.15); // 去掉更多的极值
                         const trimmedFps = fpsValues.slice(trimAmount, -trimAmount);
+                        
+                        // 添加详细日志
+                        console.log('FPS 统计:',{
+                            样本数: fpsValues.length,
+                            原始平均值: (fpsValues.reduce((a, b) => a + b, 0) / fpsValues.length).toFixed(1),
+                            最低帧率: Math.min(...fpsValues).toFixed(1),
+                            最高帧率: Math.max(...fpsValues).toFixed(1),
+                            中位数: fpsValues[Math.floor(fpsValues.length / 2)].toFixed(1),
+                            '去除极值后样本数': trimmedFps.length
+                        });
+
                         const avgFps = trimmedFps.reduce((a, b) => a + b, 0) / trimmedFps.length;
-                        const roundedFps = Math.round(avgFps);
-                        const testDuration = ((now - startTime) / 1000).toFixed(1); // 添加总测试时长
+                        // 限制最终帧率在合理范围内
+                        const roundedFps = Math.min(60, Math.round(avgFps));
+                        const testDuration = ((now - startTime) / 1000).toFixed(1);
                         
                         testResults.render = roundedFps;
                         document.getElementById('renderResult').textContent = 
