@@ -619,7 +619,6 @@
                     <script>
                         const marks = {};
                         let lcpValue = 0;
-                        let lcpElement = null;
                         let lcpResolved = false;
                         let ttiValue = 0;
 
@@ -632,28 +631,22 @@
                             }, '*');
                         }
 
-                        // 优化性能观察器
+                        // 修改性能观察器配置
                         const lcpPromise = new Promise(resolve => {
                             let lcpObserver;
                             try {
                                 lcpObserver = new PerformanceObserver((entryList) => {
                                     const entries = entryList.getEntries();
                                     entries.forEach(entry => {
-                                        // 只处理最新的LCP
                                         lcpValue = entry.startTime;
-                                        lcpElement = entry.element;
                                         mark('LCP', lcpValue);
                                     });
                                 });
                                 
-                                lcpObserver.observe({
-                                    type: 'largest-contentful-paint',
-                                    buffered: true
-                                });
+                                lcpObserver.observe({ entryTypes: ['largest-contentful-paint'] });
                             } catch (e) {
                                 console.warn('LCP观察器初始化失败:', e);
                                 resolve(0);
-                                return;
                             }
 
                             setTimeout(() => {
@@ -671,56 +664,56 @@
                                 if (entry) {
                                     mark('FCP', entry.startTime);
                                 }
-                            }).observe({
-                                type: 'paint',
-                                buffered: true
-                            });
+                            }).observe({ entryTypes: ['paint'] });
                         } catch (e) {
                             console.warn('FCP观察器初始化失败:', e);
                         }
 
-                        // TTI计算保持不变
-                        function calculateTTI() {
-                            const start = performance.now();
-                            let count = 0;
-                            const interval = setInterval(() => {
-                                const end = performance.now();
-                                if (end - start > 50) {
-                                    clearInterval(interval);
-                                    ttiValue = end;
-                                    mark('TTI', end);
+                        // TTI监测
+                        const ttiPromise = new Promise(resolve => {
+                            if ('PerformanceLongTaskTiming' in window) {
+                                new PerformanceObserver((entryList) => {
+                                    const lastTask = entryList.getEntries().pop();
+                                    if (lastTask) {
+                                        ttiValue = lastTask.startTime + lastTask.duration;
+                                        mark('TTI', ttiValue);
+                                    }
+                                }).observe({ entryTypes: ['longtask'] });
+                            }
+                            
+                            // 备用TTI计算
+                            setTimeout(() => {
+                                if (!ttiValue) {
+                                    ttiValue = performance.now();
+                                    mark('TTI', ttiValue);
                                 }
-                                if (count++ > 10) {
-                                    clearInterval(interval);
-                                }
-                            }, 50);
-                        }
+                                resolve();
+                            }, 1000);
+                        });
 
                         document.addEventListener('DOMContentLoaded', () => {
                             mark('DCL');
-                            calculateTTI();
                         });
 
-                        window.addEventListener('load', () => {
+                        window.addEventListener('load', async () => {
                             mark('load');
-                            // 等待LCP稳定后再发送结果
-                            Promise.race([
-                                lcpPromise,
+                            await Promise.race([
+                                Promise.all([lcpPromise, ttiPromise]),
                                 new Promise(resolve => setTimeout(resolve, 3000))
-                            ]).then(() => {
-                                const measurements = {
-                                    fcp: marks.FCP || 0,
-                                    lcp: lcpValue,
-                                    dcl: marks.DCL - marks.scriptStart,
-                                    tti: ttiValue - marks.scriptStart,
-                                    load: marks.load - marks.scriptStart
-                                };
-                                
-                                window.parent.postMessage({
-                                    type: 'loadComplete',
-                                    measurements: measurements
-                                }, '*');
-                            });
+                            ]);
+                            
+                            const measurements = {
+                                fcp: marks.FCP || 0,
+                                lcp: lcpValue,
+                                dcl: marks.DCL - marks.scriptStart,
+                                tti: ttiValue - marks.scriptStart,
+                                load: marks.load - marks.scriptStart
+                            };
+                            
+                            window.parent.postMessage({
+                                type: 'loadComplete',
+                                measurements: measurements
+                            }, '*');
                         });
 
                         mark('scriptStart');
