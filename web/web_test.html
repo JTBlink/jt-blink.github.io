@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>浏览器性能测试 V1.0.1</title>
+    <title>浏览器性能测试 V1.0.2</title>
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -447,7 +447,7 @@
                 render: Math.min(100, (testResults.render / maxScores.render * 100)),
                 network: Math.max(0, 100 - (testResults.network / maxScores.network * 100)),
                 memory: Math.max(0, 100 - (testResults.memory / maxScores.memory * 100)),
-                pageLoad: Math.max(0, 100 - (testResults.pageLoad / maxScores.pageLoad * 100))
+                pageLoad: testResults.pageLoad.score // 直接使用计算好的得分
             };
 
             const overallScore = Math.round(
@@ -460,7 +460,7 @@
                 <p>渲染性能: ${testResults.render} FPS (得分: ${Math.round(scores.render)})</p>
                 <p>网络性能: ${testResults.network}ms (得分: ${Math.round(scores.network)})</p>
                 <p>内存性能: ${testResults.memory.toFixed(2)}MB (得分: ${Math.round(scores.memory)})</p>
-                <p>页面加载: ${testResults.pageLoad}ms (得分: ${Math.round(scores.pageLoad)})</p>
+                <p>页面加载性能: ${Math.round(scores.pageLoad)}分 (综合评分)</p>
             `;
 
             scoreDiv.textContent = `总体性能得分: ${overallScore}`;
@@ -796,27 +796,39 @@
                     
                     if (event.data.type === 'loadComplete') {
                         measurements = event.data.measurements;
-                        const fcpScore = Math.max(0, 100 - (measurements.fcp / 1800 * 100));
-                        const lcpScore = Math.max(0, 100 - (measurements.lcp / 2500 * 100));
-                        const dclScore = Math.max(0, 100 - (measurements.dcl / 1000 * 100));
-                        const ttiScore = Math.max(0, 100 - (measurements.tti / 3500 * 100));
+                        
+                        // 计算各指标的原始分数(得分越高越好)
+                        const scores = {
+                            fcp: Math.max(0, 100 - (measurements.fcp / 1800 * 100)),
+                            lcp: Math.max(0, 100 - (measurements.lcp / 2500 * 100)),
+                            dcl: Math.max(0, 100 - (measurements.dcl / 1000 * 100)),
+                            tti: Math.max(0, 100 - (measurements.tti / 3500 * 100))
+                        };
                         
                         // 计算加权平均分
                         const pageLoadScore = (
-                            fcpScore * 0.3 + 
-                            lcpScore * 0.3 + 
-                            dclScore * 0.2 + 
-                            ttiScore * 0.2
-                        ).toFixed(2);
+                            scores.fcp * 0.3 + 
+                            scores.lcp * 0.3 + 
+                            scores.dcl * 0.2 + 
+                            scores.tti * 0.2
+                        ).toFixed(1);
+
+                        // 保存原始时间作为测试结果
+                        testResults.pageLoad = {
+                            score: parseFloat(pageLoadScore),
+                            fcp: measurements.fcp,
+                            lcp: measurements.lcp,
+                            dcl: measurements.dcl,
+                            tti: measurements.tti
+                        };
                         
-                        testResults.pageLoad = parseFloat(pageLoadScore);
-                        
+                        // 更新结果显示
                         document.getElementById('pageLoadResult').textContent = 
-                            `页面加载得分: ${pageLoadScore}\n` +
-                            `FCP: ${measurements.fcp.toFixed(0)}ms (得分: ${fcpScore.toFixed(1)})\n` +
-                            `LCP: ${measurements.lcp.toFixed(0)}ms (得分: ${lcpScore.toFixed(1)})\n` +
-                            `DCL: ${measurements.dcl.toFixed(0)}ms (得分: ${dclScore.toFixed(1)})\n` +
-                            `TTI: ${measurements.tti.toFixed(0)}ms (得分: ${ttiScore.toFixed(1)})`;
+                            `综合得分: ${pageLoadScore}\n` +
+                            `FCP: ${measurements.fcp.toFixed(0)}ms (${scores.fcp.toFixed(1)}分)\n` +
+                            `LCP: ${measurements.lcp.toFixed(0)}ms (${scores.lcp.toFixed(1)}分)\n` +
+                            `DCL: ${measurements.dcl.toFixed(0)}ms (${scores.dcl.toFixed(1)}分)\n` +
+                            `TTI: ${measurements.tti.toFixed(0)}ms (${scores.tti.toFixed(1)}分)`;
                         
                         document.body.removeChild(testFrame);
                         window.removeEventListener('message', loadHandler);
