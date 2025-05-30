@@ -426,6 +426,37 @@
             }
         }
 
+        function getBrowserInfo() {
+            const ua = navigator.userAgent;
+            let match;
+            let browserInfo = '';
+
+            // 检测 Chrome/Chromium 内核版本
+            if ((match = ua.match(/(Chrome|Chromium)\/([0-9.]+)/))) {
+                browserInfo = `Chrome内核 ${match[2]}`;
+            }
+            // 检测 Firefox 内核版本
+            else if ((match = ua.match(/Firefox\/([0-9.]+)/))) {
+                browserInfo = `Firefox内核 ${match[1]}`;
+            }
+            // 检测 Safari 内核版本
+            else if ((match = ua.match(/Safari\/([0-9.]+)/))) {
+                if ((match = ua.match(/Version\/([0-9.]+)/))) {
+                    browserInfo = `Safari内核 ${match[1]}`;
+                }
+            }
+            // 检测 Edge 新版本
+            else if ((match = ua.match(/Edg\/([0-9.]+)/))) {
+                browserInfo = `Edge(Chromium内核) ${match[1]}`;
+            }
+            // 检测 IE 内核
+            else if ((match = ua.match(/Trident\/([0-9.]+)/))) {
+                browserInfo = `IE内核 ${match[1]}`;
+            }
+
+            return browserInfo || 'Unknown Browser';
+        }
+
         function showSummary() {
             const summary = document.getElementById('summary');
             const content = document.getElementById('summaryContent');
@@ -455,6 +486,7 @@
             );
 
             content.innerHTML = `
+                <p><strong>浏览器环境：</strong> ${getBrowserInfo()}</p>
                 <p>DOM操作: ${testResults.dom}ms (得分: ${Math.round(scores.dom)})</p>
                 <p>JavaScript性能: ${testResults.js}ms (得分: ${Math.round(scores.js)})</p>
                 <p>渲染性能: ${testResults.render} FPS (得分: ${Math.round(scores.render)})</p>
